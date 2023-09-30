@@ -9,3 +9,11 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model restaurant {
+  id         String   @id @default(uuid())
+  createdAt  DateTime @default(now())
+  prefecture String
+  name       String
+  genre      String
+}
