@@ -2,15 +2,14 @@ import { getSession } from "next-auth/react";
 import React from "react";
 import Moralis from 'moralis';
 import { EvmChain } from '@moralisweb3/common-evm-utils';
-import { GetServerSidePropsContext } from "next";
+import { GetServerSidePropsContext, NextPage } from "next";
 
 type ProtectedProps = {
     message: string;
     nftList: any[];
 };
 
-
-function Protected({ message, nftList }: ProtectedProps) {
+const Protected: NextPage<ProtectedProps> = ({ message, nftList }) => {
     return (
         <div>
             <h3>Protected content</h3>
@@ -20,7 +19,7 @@ function Protected({ message, nftList }: ProtectedProps) {
     );
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
     const session = await getSession(context);
 
     if (!session) {
@@ -59,4 +58,5 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         },
     };
 }
+
 export default Protected;

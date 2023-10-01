@@ -1,12 +1,16 @@
 import { useAuthRequestChallengeEvm } from "@moralisweb3/next";
-import { signIn } from "next-auth/react";
+import { GetServerSidePropsContext, NextPage } from "next";
+import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import React from "react";
 import { useAccount, useConnect, useDisconnect, useSignMessage } from "wagmi";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 
+type SignInProps = {
+    failed: boolean;
+};
 
-function SignIn() {
+const SignIn: NextPage<SignInProps> = ({ failed }) => {
     const { connectAsync } = useConnect();
     const { disconnectAsync } = useDisconnect();
     const { isConnected } = useAccount();
@@ -57,8 +61,12 @@ function SignIn() {
          */
         push(url);
     };
+
     return (
         <div>
+            <div style={{ color: 'red' }}>
+                {failed ? "you don't have our NFT" : ""}
+            </div>
             <h3>Web3 Authentication</h3>
             <button onClick={handleAuth} className="px-2 py-1 text-blue-500 border border-blue-500 font-semibold rounded hover:bg-blue-100">Authenticate via Metamask</button>
         </div>
@@ -66,3 +74,13 @@ function SignIn() {
 }
 
 export default SignIn;
+
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+    const { query } = context;
+    const failed = query.failed === 'true';
+    return {
+        props: {
+            failed,
+        },
+    };
+}

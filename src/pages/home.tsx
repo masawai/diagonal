@@ -1,13 +1,12 @@
 import React from "react"
-import { GetServerSideProps, GetStaticProps, NextPage } from "next"
+import { GetServerSideProps, GetServerSidePropsContext, GetStaticProps, NextPage } from "next"
 // import Post, { PostProps } from "../components/Post"
 
 import { Layout } from "../components/Layout";
 import Restaurant, { RestaurantProps } from "../components/Restaurant";
 
 // GetStaticProps関数を実装して、ページの初期データを取得
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { key, value } = context.query;
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
 
   // const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/search?${key}=${value}`;
   const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/search?column=nameColumn&value=a`;
